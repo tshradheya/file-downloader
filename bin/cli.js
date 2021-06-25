@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import { getListOfFiles } from './utils';
-import yargs from 'yargs';
+import yargs, { exit } from 'yargs';
+import { downloadFromFTP } from './ftp';
+import { downloadFromSFTP } from './sftp';
 
 console.log(chalk.green.bold('Hello User'));
 
@@ -20,10 +22,32 @@ const options = yargs
   })
   .help(true).argv;
 
-console.log(chalk.yellow(`Will save ${options.i} mentioned files to ${options.o}`));
+// console.log(chalk.yellow(`Will save ${options.i} mentioned files to ${options.o}`));
 
 const filesToDownload = getListOfFiles(options.i);
 
 if (filesToDownload.length > 0) {
   console.log(chalk.yellow(`Will save ${filesToDownload} mentioned files to ${options.o}`));
 }
+
+(async () => {
+  for (const url of filesToDownload) {
+    if (!url || url.length == 0) {
+      console.log(chalk.red(`Skipping ${url}`));
+    }
+    let protocol = new URL(url).protocol;
+
+    switch (protocol) {
+      case 'ftp:':
+        await downloadFromFTP(url, options.o);
+        console.log('Done');
+        break;
+      case 'sftp:':
+        await downloadFromSFTP(url, options.o);
+        console.log('Done');
+        break;
+    }
+  }
+  console.log(chalk.green(`Bye`));
+  process.exit(0);
+})();
