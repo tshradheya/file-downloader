@@ -1,0 +1,7 @@
+{
+    "require": ["@babel/register", "@babel/polyfill"],
+    "timeout": 2000,
+    "ui": "bdd",
+    "exit": true,
+    "bail": true
+}
