@@ -28,6 +28,9 @@ export const downloadFromSFTP = async (url, outputDir) => {
         sftpBar.update(total_transferred);
       },
     });
+
+    sftpBar.stop();
+
     await sftp.end();
   } catch (err) {
     console.log(err);

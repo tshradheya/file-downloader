@@ -36,15 +36,14 @@ if (filesToDownload.length > 0) {
       console.log(chalk.red(`Skipping ${url}`));
     }
     let protocol = new URL(url).protocol;
+    console.log(chalk.green(`Downloading ${url}`));
 
     switch (protocol) {
       case 'ftp:':
-        await downloadFromFTP(url, options.o);
-        console.log('Done');
+        await downloadFromSFTP(url, options.o);
         break;
       case 'sftp:':
         await downloadFromSFTP(url, options.o);
-        console.log('Done');
         break;
     }
   }
