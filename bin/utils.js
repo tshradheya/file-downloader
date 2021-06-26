@@ -1,5 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
+import Queue from 'queue-promise';
+import cliProgress from 'cli-progress';
+
+import { downloadFromFTP } from './ftp';
+import { downloadFromSFTP } from './sftp';
+import { downloadFromHTTP } from './https';
 
 export const getListOfFiles = (inputPath) => {
   try {
@@ -8,10 +15,6 @@ export const getListOfFiles = (inputPath) => {
   } catch (err) {
     throw new Error('Error when reading input', err);
   }
-};
-
-export const getProtocolFromUrl = (url) => {
-  return url.split(':')[0];
 };
 
 export const getDownloadLoc = (fileName, outpurDir) => {
@@ -26,4 +29,76 @@ export const cleanup = (file) => {
   if (fs.existsSync(file)) {
     fs.unlinkSync(file);
   }
+};
+
+export const triggerDownloadForFiles = async (filesToDownload, outputDir) => {
+  let progressBar;
+
+  const queue = new Queue({
+    concurrent: 4,
+  });
+
+  for (const url of filesToDownload) {
+    if (!url || url.length == 0) {
+      chalk.red(`Skipping ${url}`);
+      continue;
+    }
+    let protocol = new URL(url).protocol;
+    const fileName = url.split('/').pop();
+    const outputFile = getDownloadLoc(fileName, outputDir);
+    progressBar = new cliProgress.MultiBar(
+      {
+        clearOnComplete: false,
+        hideCursor: true,
+        fps: 10000,
+        format:
+          `|` +
+          chalk.greenBright('{bar}') +
+          `|` +
+          chalk.cyan(` Download {userMsg}`) +
+          `| {percentage}% | ETA: {eta}s | {value}/{total}`,
+      },
+      cliProgress.Presets.shades_classic
+    );
+    let userMsg = `Downloading ${fileName}`;
+
+    switch (protocol) {
+      case 'ftp:':
+        queue.enqueue(
+          async () => await downloadFromFTP(url, fileName, outputFile, progressBar, userMsg)
+        );
+        break;
+      case 'sftp:':
+        queue.enqueue(
+          async () => await downloadFromSFTP(url, fileName, outputFile, progressBar, userMsg)
+        );
+        break;
+      case 'http:':
+      case 'https:':
+        queue.enqueue(
+          async () => await downloadFromHTTP(url, fileName, outputFile, progressBar, userMsg)
+        );
+        break;
+      default:
+        chalk.yellow('Protocol not supported');
+    }
+  }
+
+  process.on('SIGINT', () => {
+    console.log(chalk.red('\nAborting. Deleing all files'));
+    for (const url of filesToDownload) {
+      const fileName = url.split('/').pop();
+      const outputFile = getDownloadLoc(fileName, outputDir);
+      cleanup(outputFile);
+    }
+    process.exit(0);
+  });
+
+  return new Promise((resolve, reject) => {
+    queue.on('end', () => {
+      progressBar.stop();
+      console.log(chalk.green(`Bye`));
+      resolve();
+    });
+  });
 };

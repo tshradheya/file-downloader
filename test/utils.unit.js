@@ -1,6 +1,7 @@
 import { getListOfFiles } from '../bin/utils';
 import chai, { expect } from 'chai';
 
+// nodemon --exec ./node_modules/.bin/mocha test/utils.unit.js --watch
 describe('Utils Functions', () => {
   it('Get files content', () => {
     const files = getListOfFiles('./test/resources/input_file.txt');

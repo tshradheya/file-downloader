@@ -3,8 +3,16 @@ import axios from 'axios';
 import fs from 'fs';
 import chalk from 'chalk';
 
-export const downloadFromHTTP = async (url, fileName, outputFile, progressBar) => {
+export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, userMsg) => {
   const fd = fs.openSync(outputFile, 'w');
+  const httpBar = progressBar.create(100, 0, {
+    userMsg,
+  });
+
+  if (fs.existsSync(outputFile)) {
+    userMsg = userMsg + ' (Replacing existing)';
+    httpBar.update(null, { userMsg });
+  }
 
   try {
     const { data, headers } = await axios({
@@ -13,30 +21,55 @@ export const downloadFromHTTP = async (url, fileName, outputFile, progressBar) =
       responseType: 'stream',
     });
 
-    const totalLength = headers['content-length'] || 100;
+    let totalLength = headers['content-length'];
+    let isContentLengthPresent = false;
+    if (totalLength) {
+      isContentLengthPresent = true;
+    }
+    let interval;
 
-    const httpBar = progressBar.create(totalLength, 0, {
-      fileName,
-    });
+    if (isContentLengthPresent) {
+      httpBar.start(totalLength, 0, {
+        userMsg,
+      });
+    } else {
+      httpBar.start(100, 0, {
+        userMsg,
+      });
+
+      // This is to mock for user. Hacky but this is what Firefox also does
+      interval = setInterval(() => {
+        httpBar.increment(1);
+      }, 1000);
+    }
 
     return new Promise((resolve, reject) => {
       data.on('data', (chunk) => {
         fs.writeSync(fd, chunk);
-        httpBar.increment(chunk.length);
+        if (isContentLengthPresent) {
+          httpBar.increment(chunk.length);
+        }
       });
 
       data.on('close', async () => {
-        // httpBar.stop();
+        if (!isContentLengthPresent) {
+          clearInterval(interval);
+          httpBar.update(100);
+        }
+        httpBar.stop();
         fs.closeSync(fd);
-        resolve(true);
+        resolve();
       });
 
       data.on('error', reject);
     });
   } catch (err) {
-    console.log(
-      chalk.red(`Error downloading file ${fileName} due to ${err.message}. Performing cleanup`)
-    );
+    httpBar.update(0, {
+      fileName: chalk.red(
+        `Error downloading file ${fileName} due to "${err.message}". Performing cleanup`
+      ),
+    });
+    httpBar.stop();
     cleanup(outputFile);
   }
 };

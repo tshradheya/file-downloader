@@ -14,7 +14,9 @@ Resources:
 
 https://www.mmnt.net/
 ftp://ftp.more.net/robots.txt
+https://www.wftpserver.com/onlinedemo.htm
 
+https://github.com/tshradheya/currency-ranker/archive/refs/tags/v1.0.2.zip
 
 TODO:
 
