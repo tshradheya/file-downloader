@@ -22,7 +22,7 @@ It supports the following protocols to download files like SFTP/FTP/HTTP/HTTPS.
 
 ## Usage
 
-1. Create input file which has list of urls to download from on each separate line (input.txt)
+1. Create input file which has list of urls to download from on each separate line (`input.txt`)
 
 ```text
 sftp://demo:demo@demo.wftpserver.com:2222/download/Summer.jpg
@@ -33,7 +33,7 @@ ftp://demo:password@test.rebex.net/pub/example/KeyGeneratorSmall.png
 sftp://demo:demo@demo.wftpserver.com:2222/download/manual_en.pdf
 ```
 
-2. Create output directory (/output)
+2. Create output directory (`output/`)
 3. Run `file-downloader -i input.txt -o output`
 
 Note: Run `file-downloader --help` for information
@@ -59,7 +59,11 @@ Note: Run `file-downloader --help` for information
 
 ## Resources
 
+-
 - `https://www.wftpserver.com/onlinedemo.htm` was used as mock SFTP server to test code
 - `https://test.rebex.net/` was used for FTP server
 
 ## Future Development
+
+- More abstraction for concurrency
+- Support more protocols
