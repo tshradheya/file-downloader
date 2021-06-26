@@ -34,7 +34,9 @@ export const downloadFromHTTP = async (url, fileName, outputFile, progressBar) =
       data.on('error', reject);
     });
   } catch (err) {
-    console.log(chalk.red(`Error downloading from ${url}. Performing cleanup`));
+    console.log(
+      chalk.red(`Error downloading file ${fileName} due to ${err.message}. Performing cleanup`)
+    );
     cleanup(outputFile);
   }
 };

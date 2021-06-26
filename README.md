@@ -4,7 +4,7 @@ This is a simple File Downloaded supporting multiple protocols
 
 ## Installation
 
-- Run `npm install -g .` on the parent level of this project
+- Run `npm install -g .` on the root level of this project
 
 
 
