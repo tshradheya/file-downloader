@@ -3,11 +3,16 @@ import sftpClient from 'ssh2-sftp-client';
 import chalk from 'chalk';
 import fs from 'fs';
 
+/**
+ * Download using SFTP server protocol
+ * @param {url} url Input URL
+ * @param {fileName} fileName File Name
+ * @param {outputFile} outputFile Output file path
+ * @param {progressBar} progressBar Progress Bar reference
+ */
 export const downloadFromSFTP = async (url, fileName, outputFile, progressBar, userMsg) => {
   const parsedURL = new URL(url);
-  let sftpBar = progressBar.create(100, 0, {
-    userMsg,
-  });
+  let sftpBar = progressBar.create(100, 0, { userMsg });
   if (fs.existsSync(outputFile)) {
     userMsg = userMsg + ' (Replacing existing)';
     sftpBar.update(null, { userMsg });
@@ -26,9 +31,7 @@ export const downloadFromSFTP = async (url, fileName, outputFile, progressBar, u
     });
 
     const fileStat = await sftp.stat(parsedURL.pathname);
-    sftpBar.start(fileStat.size, 0, {
-      userMsg,
-    });
+    sftpBar.start(fileStat.size, 0, { userMsg });
 
     await sftp.fastGet(parsedURL.pathname, outputFile, {
       concurrency: 8,
@@ -42,9 +45,7 @@ export const downloadFromSFTP = async (url, fileName, outputFile, progressBar, u
     sftpBar.stop();
   } catch (err) {
     sftpBar.update(0, {
-      userMsg: chalk.red(
-        `Error downloading file ${fileName} due to "${err.message}". Performing cleanup`
-      ),
+      userMsg: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Performing cleanup`),
     });
     sftpBar.stop();
     cleanup(outputFile);

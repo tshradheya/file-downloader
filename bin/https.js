@@ -3,11 +3,16 @@ import axios from 'axios';
 import fs from 'fs';
 import chalk from 'chalk';
 
+/**
+ * Download using HTTP/HTTPS protocol
+ * @param {url} url Input URL
+ * @param {fileName} fileName File Name
+ * @param {outputFile} outputFile Output file path
+ * @param {progressBar} progressBar Progress Bar reference
+ */
 export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, userMsg) => {
   const fd = fs.openSync(outputFile, 'w');
-  const httpBar = progressBar.create(100, 0, {
-    userMsg,
-  });
+  const httpBar = progressBar.create(100, 0, { userMsg });
 
   if (fs.existsSync(outputFile)) {
     userMsg = userMsg + ' (Replacing existing)';
@@ -29,15 +34,11 @@ export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, u
     let interval;
 
     if (isContentLengthPresent) {
-      httpBar.start(totalLength, 0, {
-        userMsg,
-      });
+      httpBar.start(totalLength, 0, { userMsg });
     } else {
-      httpBar.start(100, 0, {
-        userMsg,
-      });
+      httpBar.start(100, 0, { userMsg });
 
-      // This is to mock for user. Hacky but this is what Firefox also does
+      // Note: This is to mock for user. Hacky but this is what Firefox also does
       interval = setInterval(() => {
         httpBar.increment(1);
       }, 1000);
@@ -65,9 +66,7 @@ export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, u
     });
   } catch (err) {
     httpBar.update(0, {
-      fileName: chalk.red(
-        `Error downloading file ${fileName} due to "${err.message}". Performing cleanup`
-      ),
+      fileName: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Performing cleanup`),
     });
     httpBar.stop();
     cleanup(outputFile);

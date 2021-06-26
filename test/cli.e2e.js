@@ -9,6 +9,13 @@ describe('E2E Tests', () => {
     expect(async () => await triggerDownloadForFiles(filesToDownload, outputDir)).to.not.throw;
   });
 
+  it('Fails gracefully when invalid url', async () => {
+    const filesToDownload = ['invalidurl'];
+    const outputDir = '/tmp';
+
+    expect(async () => await triggerDownloadForFiles(filesToDownload, outputDir)).to.not.throw;
+  });
+
   it('Download 2 files', async () => {
     const filesToDownload = [
       'https://github.com/CS2103AUG2017-W14-B1/main/archive/refs/tags/V1.5.1.zip',

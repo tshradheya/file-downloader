@@ -2,8 +2,6 @@ import chalk from 'chalk';
 import yargs from 'yargs';
 import { getListOfFiles, triggerDownloadForFiles } from './utils';
 
-console.log(chalk.green.bold('Hello'));
-
 const options = yargs
   .usage(chalk.keyword('purple')('Usage: file-downloader -i <file_name> -o <output_dir>'))
   .option('i', {
@@ -19,6 +17,8 @@ const options = yargs
     demandOption: true,
   })
   .help(true).argv;
+
+console.log(chalk.green.bold('Starting Download...'));
 
 const filesToDownload = getListOfFiles(options.i);
 
