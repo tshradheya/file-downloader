@@ -23,7 +23,7 @@ export const getDownloadLoc = (fileName, outpurDir) => {
 };
 
 export const cleanup = (file) => {
-  if (fs.existsSync()) {
+  if (fs.existsSync(file)) {
     fs.unlinkSync(file);
   }
 };

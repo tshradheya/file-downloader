@@ -120,3 +120,4 @@ dist
 .vscode/
 output/
 inp.txt
+.DS_Store

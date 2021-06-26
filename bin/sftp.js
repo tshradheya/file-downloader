@@ -1,25 +1,22 @@
-import path from 'path';
-import { cleanup, getDownloadLoc } from './utils';
+import { cleanup } from './utils';
 import sftpClient from 'ssh2-sftp-client';
-import cliProgress from 'cli-progress';
+import chalk from 'chalk';
 
-export const downloadFromSFTP = async (url, outputDir) => {
-  const fileName = url.split('/').pop();
-  const outputFile = getDownloadLoc(fileName, outputDir);
+export const downloadFromSFTP = async (url, fileName, outputFile, progressBar) => {
   const parsedURL = new URL(url);
-
-  const sftpBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
   try {
     let sftp = new sftpClient();
     await sftp.connect({
       host: parsedURL.hostname,
-      user: 'demo',
-      password: 'password',
+      user: parsedURL.username,
+      password: parsedURL.password,
     });
 
     const fileStat = await sftp.stat(parsedURL.pathname);
-    sftpBar.start(fileStat.size, 0);
+    const sftpBar = progressBar.create(fileStat.size, 0, {
+      fileName,
+    });
 
     await sftp.fastGet(parsedURL.pathname, outputFile, {
       concurrency: 8,
@@ -29,12 +26,9 @@ export const downloadFromSFTP = async (url, outputDir) => {
       },
     });
 
-    sftpBar.stop();
-
     await sftp.end();
   } catch (err) {
-    console.log(err);
-    console.log(`Error downloading from ${url}. Performing cleanup`);
+    console.log(chalk.red(`Error downloading from ${url}. Performing cleanup`));
     cleanup(outputFile);
   }
 };

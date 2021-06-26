@@ -17,10 +17,12 @@
   "author": "Shradheya Thakre",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "basic-ftp": "^4.6.6",
     "chalk": "^4.1.1",
     "cli-progress": "^3.9.0",
     "esm": "^3.2.25",
+    "queue-promise": "^2.2.1",
     "ssh2-sftp-client": "^7.0.0",
     "yargs": "^17.0.1"
   },
