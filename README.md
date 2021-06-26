@@ -22,7 +22,7 @@ It supports the following protocols to download files like SFTP/FTP/HTTP/HTTPS.
 
 ## Usage
 
-1. Create input file which has list of urls to download from on each separate line (`input.txt`)
+1. Create input file which has list of urls to download from on each separate line (`touch input.txt`)
 
 ```text
 sftp://demo:demo@demo.wftpserver.com:2222/download/Summer.jpg
@@ -33,7 +33,7 @@ ftp://demo:password@test.rebex.net/pub/example/KeyGeneratorSmall.png
 sftp://demo:demo@demo.wftpserver.com:2222/download/manual_en.pdf
 ```
 
-2. Create output directory (`output/`)
+2. Create output directory (`mkdir output`)
 3. Run `file-downloader -i input.txt -o output`
 
 Note: Run `file-downloader --help` for information
@@ -59,11 +59,13 @@ Note: Run `file-downloader --help` for information
 
 ## Resources
 
--
+- Other download utilities to know which protocols to support and CLient libraries like `axios`, `ssh2-sftp-client`, `basic-ftp`
 - `https://www.wftpserver.com/onlinedemo.htm` was used as mock SFTP server to test code
 - `https://test.rebex.net/` was used for FTP server
 
 ## Future Development
 
-- More abstraction for concurrency
+- More abstraction for concurrency and things like auth for servers
 - Support more protocols
+- Can combine FTP and SFTP for reducing dependency
+- More testing by mocking
