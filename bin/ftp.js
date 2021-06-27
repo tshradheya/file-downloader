@@ -13,7 +13,7 @@ import { cleanup } from './utils';
  */
 export const downloadFromFTP = async (url, fileName, outputFile, progressBar, userMsg) => {
   const parsedURL = new URL(url);
-  const ftpBar = progressBar.create(100, 0, { fileName });
+  const ftpBar = progressBar.create(100, 0, { userMsg });
 
   if (fs.existsSync(outputFile)) {
     userMsg = userMsg + ' (Replacing existing)';
