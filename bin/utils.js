@@ -111,7 +111,7 @@ export const triggerDownloadForFiles = async (filesToDownload, outputDir) => {
   }
 
   process.on('SIGINT', () => {
-    console.log(chalk.red('\nAborting. Deleing all files'));
+    console.log(chalk.red('\nAborting. Deleting all files'));
     for (const url of filesToDownload) {
       const fileName = url.split('/').pop();
       const outputFile = getDownloadLoc(fileName, outputDir);

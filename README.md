@@ -8,6 +8,8 @@ It supports the following protocols to download files like SFTP/FTP/HTTP/HTTPS.
 - HTTP
 - HTTPS
 
+Here is a quick [demo](https://www.loom.com/share/0065bd2c12fc4c5c8b1b6be544c57af1).
+
 ## Setup
 
 ### Versions
@@ -50,6 +52,7 @@ Note: Run `file-downloader --help` for information
 - Having a good knowledge of JavaScript, I decided to use that and also it has good and reliable libraries for sftp and ftp.
 - Asynchronous nature of Node.JS allowed in implementing concurrency.
 - I also added a progress bar which also serves to show complete summary when entire utility has finished running.
+- Many use-cases that come with downloading files were handled for e.g. existing file, unexpected crash of program(perform cleanup), error handling and edge case scenarios
 
 ## Tackling challenges
 
@@ -77,3 +80,7 @@ Note: Run `file-downloader --help` for information
 - Support more protocols
 - Can combine FTP and SFTP for reducing dependency
 - More testing by mocking
+
+## Appendix
+
+- You may be required to install `cmake` through `brew install cmake` for the SFTP protocol library. This needs to be done if there is an error when doing `npm install`.
