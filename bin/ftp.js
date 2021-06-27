@@ -11,7 +11,7 @@ import { cleanup } from './utils';
  * @param {outputFile} outputFile Output file path
  * @param {progressBar} progressBar Progress Bar reference
  */
-export const downloadFromFTP = async (url, fileName, outputFile, progressBar) => {
+export const downloadFromFTP = async (url, fileName, outputFile, progressBar, userMsg) => {
   const parsedURL = new URL(url);
   const ftpBar = progressBar.create(100, 0, { fileName });
 
