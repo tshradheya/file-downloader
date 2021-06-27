@@ -43,6 +43,14 @@ Note: Run `file-downloader --help` for information
 - Run `npm run test` to run all tests.
 - Run `npm run test:watch` to run in watch mode while development
 
+## Logic and Approach
+
+- In order to complete the task, my first idea of what the project would look like was something similar to `wget` utility command. Hence I decided to package this like a CLI program.
+- I researched on the popularly used protocols for downloading files and tried to implement the highly used ones.
+- Having a good knowledge of JavaScript, I decided to use that and also it has good and reliable libraries for sftp and ftp.
+- Asynchronous nature of Node.JS allowed in implementing concurrency.
+- I also added a progress bar which also serves to show complete summary when entire utility has finished running.
+
 ## Tackling challenges
 
 - The CLI supports 4 different protocol and based on the url it deciphers and downloads accordingly.

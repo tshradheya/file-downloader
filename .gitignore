@@ -119,5 +119,5 @@ dist
 
 .vscode/
 output/
-inp.txt
+input.txt
 .DS_Store

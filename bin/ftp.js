@@ -46,7 +46,7 @@ export const downloadFromFTP = async (url, fileName, outputFile, progressBar) =>
     ftpBar.stop();
   } catch (err) {
     ftpBar.update(0, {
-      userMsg: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Performing cleanup`),
+      userMsg: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Cleanup done`),
     });
     ftpBar.stop();
     cleanup(outputFile);

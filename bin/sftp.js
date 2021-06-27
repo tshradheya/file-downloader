@@ -45,7 +45,7 @@ export const downloadFromSFTP = async (url, fileName, outputFile, progressBar, u
     sftpBar.stop();
   } catch (err) {
     sftpBar.update(0, {
-      userMsg: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Performing cleanup`),
+      userMsg: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Cleanup done`),
     });
     sftpBar.stop();
     cleanup(outputFile);

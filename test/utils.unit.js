@@ -1,7 +1,7 @@
 import { getListOfFiles } from '../bin/utils';
 import chai, { expect } from 'chai';
 
-// nodemon --exec ./node_modules/.bin/mocha test/utils.unit.js --watch
+// nodemon --exec ./node_modules/.bin/mocha --require esm test/utils.unit.js --watch
 describe('Utils Functions', () => {
   it('Get files content', () => {
     const files = getListOfFiles('./test/resources/input_file.txt');
@@ -11,8 +11,6 @@ describe('Utils Functions', () => {
   });
 
   it('Get failure when file not present', () => {
-    expect(() => getListOfFiles('./test/resources/file_not_present.txt')).to.throw(
-      'Error when reading input'
-    );
+    expect(() => getListOfFiles('./test/resources/file_not_present.txt')).to.throw('Error when reading input');
   });
 });

@@ -62,11 +62,14 @@ export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, u
         resolve();
       });
 
-      data.on('error', reject);
+      data.on('error', () => {
+        fs.closeSync(fd);
+        reject();
+      });
     });
   } catch (err) {
     httpBar.update(0, {
-      fileName: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Performing cleanup`),
+      fileName: chalk.red(`Error downloading file ${fileName} due to "${err.message}". Cleanup done`),
     });
     httpBar.stop();
     cleanup(outputFile);

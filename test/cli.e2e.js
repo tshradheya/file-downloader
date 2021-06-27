@@ -1,6 +1,7 @@
 import { triggerDownloadForFiles } from '../bin/utils';
 import chai, { expect } from 'chai';
 
+// nodemon --exec ./node_modules/.bin/mocha --require esm test/cli.e2e.js --watch
 describe('E2E Tests', () => {
   it('Download 0 files', async () => {
     const filesToDownload = [];

@@ -3,6 +3,7 @@ import chai, { expect } from 'chai';
 import fs from 'fs';
 import cliProgress from 'cli-progress';
 
+// nodemon --exec ./node_modules/.bin/mocha --require esm test/ftp.integration.js --watch
 describe('FTP Download Integration', () => {
   const progressBar = new cliProgress.MultiBar({}, cliProgress.Presets.shades_classic);
   it('Download from FTP mock server success', async () => {
@@ -21,8 +22,7 @@ describe('FTP Download Integration', () => {
   }).timeout(100000);
 
   it('Get failure when auth failed due to wrong credentials', async () => {
-    const urlToDownload =
-      'ftp://wronguser:password@test.rebex.net/pub/example/KeyGeneratorSmall.png';
+    const urlToDownload = 'ftp://wronguser:password@test.rebex.net/pub/example/KeyGeneratorSmall.png';
 
     await downloadFromFTP(
       urlToDownload,

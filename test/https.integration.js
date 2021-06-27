@@ -3,11 +3,11 @@ import chai, { expect } from 'chai';
 import fs from 'fs';
 import cliProgress from 'cli-progress';
 
+// nodemon --exec ./node_modules/.bin/mocha --require esm test/https.integration.js --watch
 describe('HTTP Download Integration', () => {
   const progressBar = new cliProgress.MultiBar({}, cliProgress.Presets.shades_classic);
   it('Download from Github success', async () => {
-    const urlToDownload =
-      'http://github.com/tshradheya/currency-ranker/archive/refs/tags/v1.0.2.zip';
+    const urlToDownload = 'http://github.com/tshradheya/currency-ranker/archive/refs/tags/v1.0.2.zip';
     await downloadFromHTTP(urlToDownload, 'v1.0.2.zip', './test/resources/v1.0.2.zip', progressBar);
 
     expect(fs.existsSync('./test/resources/v1.0.2.zip')).to.be.true;
@@ -17,8 +17,7 @@ describe('HTTP Download Integration', () => {
   }).timeout(100000);
 
   it('Get failure when url is 404', async () => {
-    const urlToDownload =
-      'http://github.com/tshradheya/currency-ranker/archive/refs/tags/v9.0.2.zip';
+    const urlToDownload = 'http://github.com/tshradheya/currency-ranker/archive/refs/tags/v9.0.2.zip';
 
     await downloadFromHTTP(urlToDownload, 'v9.0.2.zip', './test/resources/v9.0.2.zip', progressBar);
 
@@ -29,8 +28,7 @@ describe('HTTP Download Integration', () => {
 describe('HTTPS Download Integration', () => {
   const progressBar = new cliProgress.MultiBar({}, cliProgress.Presets.shades_classic);
   it('Download from Github success', async () => {
-    const urlToDownload =
-      'https://github.com/tshradheya/currency-ranker/archive/refs/tags/v1.0.1.zip';
+    const urlToDownload = 'https://github.com/tshradheya/currency-ranker/archive/refs/tags/v1.0.1.zip';
     await downloadFromHTTP(urlToDownload, 'v1.0.1.zip', './test/resources/v1.0.1.zip', progressBar);
 
     expect(fs.existsSync('./test/resources/v1.0.1.zip')).to.be.true;
@@ -40,8 +38,7 @@ describe('HTTPS Download Integration', () => {
   }).timeout(100000);
 
   it('Get failure when url is 404', async () => {
-    const urlToDownload =
-      'https://github.com/tshradheya/currency-ranker/archive/refs/tags/v9.0.2.zip';
+    const urlToDownload = 'https://github.com/tshradheya/currency-ranker/archive/refs/tags/v9.0.2.zip';
 
     await downloadFromHTTP(urlToDownload, 'v9.0.2.zip', './test/resources/v9.0.2.zip', progressBar);
 

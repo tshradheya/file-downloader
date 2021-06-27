@@ -3,6 +3,7 @@ import chai, { expect } from 'chai';
 import fs from 'fs';
 import cliProgress from 'cli-progress';
 
+// nodemon --exec ./node_modules/.bin/mocha --require esm test/sftp.integration.js --watch
 describe('SFTP Download Integration', () => {
   const progressBar = new cliProgress.MultiBar({}, cliProgress.Presets.shades_classic);
   it('Download from SFTP mock server success', async () => {
