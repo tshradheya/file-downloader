@@ -87,7 +87,7 @@ export const triggerDownloadForFiles = async (filesToDownload, outputDir) => {
           `|` +
           chalk.greenBright('{bar}') +
           `|` +
-          chalk.cyan(` Download {userMsg}`) +
+          chalk.cyan(` {userMsg} `) +
           `| {percentage}% | ETA: {eta}s | {value}/{total}`,
       },
       cliProgress.Presets.shades_classic

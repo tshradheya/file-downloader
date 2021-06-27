@@ -11,13 +11,12 @@ import chalk from 'chalk';
  * @param {progressBar} progressBar Progress Bar reference
  */
 export const downloadFromHTTP = async (url, fileName, outputFile, progressBar, userMsg) => {
-  const fd = fs.openSync(outputFile, 'w');
   const httpBar = progressBar.create(100, 0, { userMsg });
-
   if (fs.existsSync(outputFile)) {
     userMsg = userMsg + ' (Replacing existing)';
     httpBar.update(null, { userMsg });
   }
+  const fd = fs.openSync(outputFile, 'w');
 
   try {
     const { data, headers } = await axios({
