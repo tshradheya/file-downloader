@@ -15,7 +15,7 @@ import { downloadFromHTTP } from './https';
  */
 export const getListOfFiles = (inputPath) => {
   try {
-    const text = fs.readFileSync(inputPath).toString('utf-8');
+    const text = fs.readFileSync(inputPath).toString('utf-8').replace(/\r\n/g, '\n');
     return text.split('\n');
   } catch (err) {
     throw new Error('Error when reading input', err);
