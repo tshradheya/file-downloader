@@ -55,7 +55,7 @@ export const triggerDownloadForFiles = async (filesToDownload, outputDir) => {
   let progressBar;
 
   const queue = new Queue({
-    concurrent: 4,
+    concurrent: 5,
   });
 
   for (const url of filesToDownload) {
@@ -96,20 +96,14 @@ export const triggerDownloadForFiles = async (filesToDownload, outputDir) => {
 
     switch (protocol) {
       case 'ftp:':
-        queue.enqueue(
-          async () => await downloadFromFTP(url, fileName, outputFile, progressBar, userMsg)
-        );
+        queue.enqueue(async () => await downloadFromFTP(url, fileName, outputFile, progressBar, userMsg));
         break;
       case 'sftp:':
-        queue.enqueue(
-          async () => await downloadFromSFTP(url, fileName, outputFile, progressBar, userMsg)
-        );
+        queue.enqueue(async () => await downloadFromSFTP(url, fileName, outputFile, progressBar, userMsg));
         break;
       case 'http:':
       case 'https:':
-        queue.enqueue(
-          async () => await downloadFromHTTP(url, fileName, outputFile, progressBar, userMsg)
-        );
+        queue.enqueue(async () => await downloadFromHTTP(url, fileName, outputFile, progressBar, userMsg));
         break;
       default:
         chalk.yellow('Protocol not supported');
